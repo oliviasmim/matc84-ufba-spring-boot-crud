@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import br.matc84.spring.exercicio.domain.models.InvoiceModel;
 import br.matc84.spring.exercicio.domain.ports.InvoiceRepositoryPort;
 import br.matc84.spring.exercicio.infra.persistence.entities.InvoiceEntity;
+import br.matc84.spring.exercicio.infra.persistence.entities.InvoiceEntity.InvoiceEntityBuilder;
 import br.matc84.spring.exercicio.infra.persistence.mappers.InvoiceMapper;
 import br.matc84.spring.exercicio.infra.persistence.repositories.InvoiceRepository;
 
@@ -35,5 +36,25 @@ public class InvoiceRepositoryAdapter implements InvoiceRepositoryPort {
         Optional<InvoiceEntity> invoice = this.invoiceRepository.findById(uuid);
 
         return invoice.map(InvoiceMapper::toModel);
+    }
+
+    @Override
+    public InvoiceModel create(final BigDecimal totalValue, final LocalDate dueDate) {
+        InvoiceEntity invoice = InvoiceEntityBuilder
+                .anInvoiceEntity()
+                .withTotalValue(totalValue)
+                .withDueDate(dueDate)
+                .build();
+
+        this.invoiceRepository.save(invoice);
+
+        return InvoiceMapper.toModel(invoice);
+    }
+
+    @Override
+    public InvoiceModel save(InvoiceModel invoice) {
+        InvoiceEntity invoiceEntity = InvoiceMapper.toEntity(invoice);
+
+        return InvoiceMapper.toModel(this.invoiceRepository.save(invoiceEntity));
     }
 }

@@ -16,7 +16,7 @@ public class InvoiceEntity {
     private BigDecimal totalValue;
     private LocalDate dueDate;
     private LocalDateTime createdAt;
-    private InvoiceEntity() { }
+    public InvoiceEntity() { }
 
     public String getUuid() {
         return uuid;

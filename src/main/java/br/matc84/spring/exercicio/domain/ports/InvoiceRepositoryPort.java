@@ -11,4 +11,5 @@ public interface InvoiceRepositoryPort {
     public List<InvoiceModel> getAll();
     public Optional<InvoiceModel> findById(String uuid);
     public InvoiceModel create(BigDecimal totalValue, LocalDate dueDate);
+    public InvoiceModel save(InvoiceModel invoice);
 }

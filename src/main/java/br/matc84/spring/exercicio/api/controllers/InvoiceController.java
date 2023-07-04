@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.matc84.spring.exercicio.api.dtos.InvoiceDTO;
 import br.matc84.spring.exercicio.domain.models.InvoiceModel;
 import br.matc84.spring.exercicio.domain.ports.InvoiceServicePort;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 @Validated
 @RestController
@@ -41,6 +42,7 @@ public class InvoiceController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Validated InvoiceDTO invoice) {
-        return new ResponseEntity<>(new Object(), HttpStatus.NO_CONTENT);
+        InvoiceModel response = this.invoiceServicePort.create(invoice.totalValue, invoice.dueDate);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
